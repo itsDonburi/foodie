@@ -38,12 +38,19 @@ function renderModal(mealId) {
 
     document.getElementById("mealModal").innerText = "";
 
+    let instructionsArr = meal.strInstructions.replaceAll('\r\n\r\n', '\r\n').split('\r\n');
+    let res = ``;
+
+    instructionsArr.forEach(string => {
+      res += `<li>${string}</li>`
+    });
+
     var modalTemplate = `
       <div class="uk-modal-body uk-modal-dialog">
         <button class="uk-modal-close-default" type="button" aria-label="Close" uk-close></button>
         <h2 class="uk-modal-title uk-padding-small uk-padding-remove-left">${meal.strMeal}</h2>
-        <p class="uk-text-justify">${meal.strInstructions}</p>
-        <p class="uk-text-right uk-padding-remove-bottom uk-padding-small uk-padding-remove-right">
+        <ol class='modal-list' type="1">${res}</ol>
+        <p class="uk-text-right uk-padding-remove-bottom uk-padding-remove-left uk-padding-small uk-padding-remove-right">
         <button class="uk-button uk-button-secondary uk-width-1-1" type="button" onclick="window.open('${meal.strYoutube}', '_blank')">View Recipe</a></button>
         </p>
       </div>
@@ -79,9 +86,8 @@ function getCard(title, imgSrc, mealId = "") {
                                 </svg>
                               </button>
                           </span>
-
-
                       </div>
+                      
                   </div>
               </div>
           `;
@@ -93,10 +99,8 @@ function getCard(title, imgSrc, mealId = "") {
 
 // IIFE for code isolation (Immediately Invoked Function Expression)
 (async function () {
-  //   var url = "https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata";
-  //   getData(url);
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 4; i++) {
     let response = mealService.getRandomMeal();
     response.then((res) => {
       $.each(res.meals, function (i, data) {
@@ -109,14 +113,16 @@ function getCard(title, imgSrc, mealId = "") {
           $(".heart-button").off("click");
           $(".heart-button").on("click", function () {
             $(this).toggleClass("hearted");
-
+            
             if ($(this).hasClass("hearted")) {
               let mealId = $(this).parent("span").attr("id");
               let id = mealId.split("_")[1];
               let mealData = localStorage.getItem(mealId);
               localStorage.setItem(`liked_meal_${id}`, mealData);
+              UIkit.notification({message:`<div class='uk-flex uk-flex-middle'><span class='uk-flex-none uk-margin-small-right'><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6fcb6f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg></span>Successfully added to favorites!</div>`, timeout:5000, pos:'top-right'});
             } else {
               localStorage.removeItem(`liked_meal_${data.idMeal}`);
+              UIkit.notification({message:`<div class='uk-flex uk-flex-middle'><span class='uk-flex-none uk-margin-small-right'><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6fcb6f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg></span>Successfully removed from favorites!</div>`, timeout:5000, pos:'top-right'});
             }
           });
 
@@ -135,4 +141,7 @@ function getCard(title, imgSrc, mealId = "") {
       });
     });
   }
+
+
+
 })();

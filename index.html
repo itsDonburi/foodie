@@ -12,15 +12,6 @@
     <link rel="stylesheet" href="https://unpkg.com/franken-wc@0.0.2/dist/css/stone.min.css">
     <link rel="stylesheet" href="https://unpkg.com/franken-wc@0.0.2/dist/css/gray.min.css">
     <link rel="stylesheet" href="https://unpkg.com/franken-wc@0.0.2/dist/css/neutral.min.css">
-    <!-- <link rel="stylesheet" href="https://unpkg.com/franken-wc@0.0.2/dist/css/red.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/franken-wc@0.0.2/dist/css/rose.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/franken-wc@0.0.2/dist/css/orange.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/franken-wc@0.0.2/dist/css/green.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/franken-wc@0.0.2/dist/css/blue.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/franken-wc@0.0.2/dist/css/yellow.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/franken-wc@0.0.2/dist/css/violet.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/franken-wc@0.0.2/dist/css/zinc.min.css">
-     -->
 </head>
 <body>
       
@@ -33,7 +24,7 @@
             <a class="uk-navbar-item uk-logo" href="#" aria-label="Back to Home">Foodie Hub</a>
 
             <li class="uk-active"><a href="#">Inspiration</a></li>
-            <li><a href="liked">Favorites</a></li>
+            <li><a href="favorites.html">Favorites</a></li>
 
           </ul>
   
@@ -42,10 +33,7 @@
     </div>
   </nav>
 
-
   <div id="content">
-
-    <button id="loadPageBtn">Load Another Page</button>
 
     <div class="uk-section uk-section-secondary">
       <div class="uk-container">
@@ -71,15 +59,13 @@
         </div>
       </div>
     </div>
-  
-    <div id="randomMealContainer" class="uk-child-width-1-3@m uk-grid-medium uk-grid-match uk-margin-left uk-margin-right uk-margin-large-top" uk-grid></div>
-  
-  
+    
+    <div id="randomMealContainer" class="uk-child-width-1-4@m uk-grid-medium uk-grid-match uk-margin-left uk-margin-right uk-margin-large-top" uk-grid></div>
+    
+    
     <div id="mealModal" uk-modal></div>
 
   </div>
-
-
 
 </body>
 
@@ -89,34 +75,40 @@
 
 <style>
 
-#randomMealContainer .image-wrapper {
-  width: inherit;  /* Set the width of the container */
-  height: inherit; /* Set the height of the container */
-  overflow: hidden; /* Hide the part of the image that overflows the container */
-  position: relative;
-}
+    #randomMealContainer .image-wrapper {
+      width: inherit;  /* Set the width of the container */
+      height: inherit; /* Set the height of the container */
+      overflow: hidden; /* Hide the part of the image that overflows the container */
+      position: relative;
+    }
+    
+    .random-meal-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;  /* Make sure the image covers the container */
+      transition: transform 0.3s ease-in-out; /* Smooth transition for the zoom effect */
+      transform-origin: center center;
+    }
+    
+    /* Hover effect to zoom in */
+    .random-meal-img:hover {
+      transform: scale(1.2); /* Scale the image to 120% on hover */
+    }
+    
+    .action-toolbar {
+      padding: 1.1rem;
+      border-top-left-radius: 1rem;
+    }
+    
+    .hearted svg {
+      fill : #c90000
+    }
 
-.random-meal-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;  /* Make sure the image covers the container */
-  transition: transform 0.3s ease-in-out; /* Smooth transition for the zoom effect */
-  transform-origin: center center;
-}
-
-/* Hover effect to zoom in */
-.random-meal-img:hover {
-  transform: scale(1.2); /* Scale the image to 120% on hover */
-}
-
-.action-toolbar {
-  padding: 1.1rem;
-  border-top-left-radius: 1rem;
-}
-
-.hearted svg {
-  fill : #c90000
-}
-
-
+    .modal-list {
+      overflow-y: scroll;
+      scrollbar-width: auto;
+      max-height: 400px;
+    }
+    
+    
 </style>
