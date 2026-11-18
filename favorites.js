@@ -20,24 +20,16 @@
     }
     
     function insertMealInstruction(mealObj){
-        
-        let instructionsArr = mealObj.strInstructions.replaceAll('\r\n\r\n', '\r\n').split('\r\n');
-        let res = ``;
-    
-        instructionsArr.forEach(string => {
-          res += `<li>${string}</li>`
-        });
-
-        $(`#mealInstruction`).append(res);
+        $(`#mealInstruction`).html(renderMealInstructions(parseMealInstructions(mealObj.strInstructions)));
     }
 
     function insertToolbar(mealObj){
 
         let mealId = mealObj.idMeal || "";
         let toolbarTemplate = `
-                <div class="uk-overlay uk-overlay-default uk-position-bottom-right action-toolbar">
+                <div class="action-toolbar absolute bottom-0 right-0 bg-muted">
                 <span id="meal_${mealId}">
-                    <button class="uk-button uk-button-default heart-button hearted" uk-toggle="target: #confirmModal" uk-tooltip="title: Like">
+                    <button class="uk-btn uk-btn-default uk-btn-icon heart-button hearted" type="button" data-uk-toggle="target: #confirmModal" data-uk-tooltip="title: Like">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
                         </svg>
@@ -60,7 +52,7 @@
             let mealId = $('#mealImg img').first().data('meal-id');
             localStorage.removeItem(`liked_meal_${mealId}`);
             UIkit.modal('#confirmModal').hide();
-            UIkit.notification({message:`<div class='uk-flex uk-flex-middle'><span class='uk-flex-none uk-margin-small-right'><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6fcb6f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg></span>Successfully removed from favorites!</div>`, timeout:5000, pos:'top-right'});
+            UIkit.notification({message:`<div class='flex items-center gap-2'><span class='shrink-0'><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6fcb6f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg></span>Successfully removed from favorites!</div>`, timeout:5000, pos:'top-right'});
             resetCardFields();
             renderMealCard();
         });
@@ -81,9 +73,9 @@
 
                 if ((ingredient !== null && ingredient !== "") && (measurement !== null && measurement !== "")){
                     let favMealIngredientTemplate = `
-                        <div class="uk-grid">
-                            <div class="uk-width-expand list-child" uk-leader>${ingredient}</div>
-                            <div>${measurement}</div>
+                        <div class="ingredient-row flex items-center gap-4">
+                            <div class="min-w-0 flex-1 list-child" uk-leader>${ingredient}</div>
+                            <div class="shrink-0">${measurement}</div>
                         </div>
                     `;
     
@@ -95,42 +87,62 @@
         return res;
     }
 
+    let currentIndex = 0;
+
     function getLikedMealsList(){
-        let likedPattern = /liked_/;
-        let likedMeals = Object.keys(localStorage).filter((val) => likedPattern.test(val)) || [];
-        return likedMeals;
+        return Object.keys(localStorage).filter((key) => /^liked_meal_\d+$/.test(key));
+    }
+
+    function updatePagination(index, total){
+        const hasMeals = total > 0;
+        $('#favPagination').toggle(hasMeals);
+        $('#favPage').text(hasMeals ? `${index + 1} / ${total}` : '');
+        $('#favPrev, #favNext').prop('disabled', total < 2).toggleClass('uk-disabled', total < 2);
     }
 
     function checkFavListIsEmpty(){
         let likedMealsList = getLikedMealsList();
     
         if (likedMealsList.length == 0){
-            if ($('#content').is(':visible')){
-                $('#content').hide();
-            }
+            $('#content').hide();
             $('#emptyListContainer').show();
+            updatePagination(0, 0);
         } 
         else {
             $('#emptyListContainer').hide();
+            $('#content').show();
         }
+    }
+
+    function showMealAt(index){
+        let likedMealsList = getLikedMealsList();
+
+        if (likedMealsList.length === 0){
+            currentIndex = 0;
+            resetCardFields();
+            checkFavListIsEmpty();
+            return;
+        }
+
+        currentIndex = ((index % likedMealsList.length) + likedMealsList.length) % likedMealsList.length;
+        let mealObj = JSON.parse(localStorage.getItem(likedMealsList[currentIndex]));
+
+        resetCardFields();
+        checkFavListIsEmpty();
+        insertMealCardV2(mealObj);
+        insertMealInstruction(mealObj);
+        insertToolbar(mealObj);
+        updatePagination(currentIndex, likedMealsList.length);
     }
 
     function renderMealCard(){
         let likedMealsList = getLikedMealsList();
 
-        if (likedMealsList.length > 0){
-            for(let i = 0; i < likedMealsList.length; i++){
-                mealObj = JSON.parse(localStorage.getItem(likedMealsList[i]));
-                insertMealCardV2(mealObj);
-                insertMealInstruction(mealObj);
-                insertToolbar(mealObj);
-                break;
-            }
-        } 
-        else {
-            checkFavListIsEmpty();
+        if (currentIndex >= likedMealsList.length){
+            currentIndex = Math.max(0, likedMealsList.length - 1);
         }
-        
+
+        showMealAt(currentIndex);
     }
 
     function resetCardFields(){
@@ -142,11 +154,12 @@
     }
 
     function main(){
-        $('#mealImg').off('change');
-        $('#mealImg').on('change', function(){
-            alert('something changed');
-        })
-        checkFavListIsEmpty();
+        $('#favNext').on('click', function(){
+            showMealAt(currentIndex + 1);
+        });
+        $('#favPrev').on('click', function(){
+            showMealAt(currentIndex - 1);
+        });
         renderMealCard();
     }
 

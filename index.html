@@ -1,114 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="uk-theme-neutral">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Franken</title>
-    <link rel="stylesheet" href="https://unpkg.com/franken-ui@1.1.0/dist/css/core.min.css"/>
-    <script src="https://unpkg.com/franken-ui@1.1.0/dist/js/core.iife.js" type="module"></script>
-    <script src="https://unpkg.com/franken-ui@1.1.0/dist/js/icon.iife.js" type="module"></script>
+    <title>Foodie Hub</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/franken-ui@2.1.2/dist/css/core.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/franken-ui@2.1.2/dist/css/utilities.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/franken-ui@2.1.2/dist/js/core.iife.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/franken-ui@2.1.2/dist/js/icon.iife.js" type="module"></script>
+    <style>
+        #randomMealContainer .image-wrapper {
+            width: inherit;
+            height: 18rem;
+            overflow: hidden;
+            position: relative;
+        }
 
-    <link rel="stylesheet" href="https://unpkg.com/franken-wc@0.0.2/dist/css/slate.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/franken-wc@0.0.2/dist/css/stone.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/franken-wc@0.0.2/dist/css/gray.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/franken-wc@0.0.2/dist/css/neutral.min.css">
+        .random-meal-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease-in-out;
+            transform-origin: center center;
+        }
+
+        .random-meal-img:hover {
+            transform: scale(1.2);
+        }
+
+        .action-toolbar {
+            padding: 1.1rem;
+            border-top-left-radius: 1rem;
+        }
+
+        .hearted svg {
+            fill: #c90000;
+        }
+
+        .modal-list {
+            overflow-y: scroll;
+            scrollbar-width: auto;
+            max-height: 400px;
+        }
+    </style>
 </head>
-<body>
-      
-  <nav class="uk-navbar-container">
-    <div class="uk-container">
-      <div uk-navbar>
-        <div class="uk-navbar-left">
-          <ul class="uk-navbar-nav">
+<body class="bg-background text-foreground">
 
-            <a class="uk-navbar-item uk-logo" href="#" aria-label="Back to Home">Foodie Hub</a>
-
-            <li class="uk-active"><a href="#">Inspiration</a></li>
-            <li><a href="favorites.html">Favorites</a></li>
-
-          </ul>
-  
-        </div>
-      </div>
+  <header class="border-b border-border">
+    <div class="mx-auto flex max-w-6xl items-center gap-6 px-4 py-3">
+      <a class="text-lg font-semibold" href="index.html">Foodie Hub</a>
+      <ul class="uk-subnav">
+        <li class="uk-active"><a href="index.html">Inspiration</a></li>
+        <li><a href="favorites.html">Favorites</a></li>
+      </ul>
     </div>
-  </nav>
+  </header>
 
-  <div id="content">
-
-    <div class="uk-section uk-section-secondary">
-      <div class="uk-container">
-        <div class="uk-grid-match" uk-grid>
-          <div class="uk-width-1-3">
-            <p class="uk-heading-medium uk-margin">
-              Feeling
-              <br>
-              <u>
-                Bored?
-              </u>
-            </p>
-          </div>
-          <div class="uk-width-2-3 uk-divider-vertical">
-            <p>
-              Feeling adventurous in the kitchen? Let us inspire you! Discover three random, 
-              mouthwatering meals that are perfect for spicing up your culinary routine. 
-              Whether you're in the mood for something new or want to try a flavor you've never experienced before, 
-              this is your chance to explore exciting dishes from all over the world. 
-              Ready to expand your taste buds and try something new? Let's dive in!
-            </p>
-          </div>
-        </div>
+  <main>
+    <section class="bg-secondary text-secondary-foreground">
+      <div class="mx-auto grid max-w-6xl items-start gap-6 px-6 py-8 md:grid-cols-3">
+        <p class="text-3xl font-semibold">
+          Feeling
+          <br>
+          <u>Bored?</u>
+        </p>
+        <p class="md:col-span-2 md:border-l md:border-border md:pl-6">
+          Feeling adventurous in the kitchen? Let us inspire you! Discover three random,
+          mouthwatering meals that are perfect for spicing up your culinary routine.
+          Whether you're in the mood for something new or want to try a flavor you've never experienced before,
+          this is your chance to explore exciting dishes from all over the world.
+          Ready to expand your taste buds and try something new? Let's dive in!
+        </p>
       </div>
-    </div>
-    
-    <div id="randomMealContainer" class="uk-child-width-1-4@m uk-grid-medium uk-grid-match uk-margin-left uk-margin-right uk-margin-large-top" uk-grid></div>
-    
-    
-    <div id="mealModal" uk-modal></div>
+    </section>
 
-  </div>
+    <div id="randomMealContainer" class="mx-4 mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4"></div>
 
+    <div id="mealModal" data-uk-modal></div>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+  <script src="./instructions.js"></script>
+  <script src="./meal.js"></script>
 </body>
-
-<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-<script src="./meal.js"></script>
 </html>
-
-<style>
-
-    #randomMealContainer .image-wrapper {
-      width: inherit;  /* Set the width of the container */
-      height: inherit; /* Set the height of the container */
-      overflow: hidden; /* Hide the part of the image that overflows the container */
-      position: relative;
-    }
-    
-    .random-meal-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;  /* Make sure the image covers the container */
-      transition: transform 0.3s ease-in-out; /* Smooth transition for the zoom effect */
-      transform-origin: center center;
-    }
-    
-    /* Hover effect to zoom in */
-    .random-meal-img:hover {
-      transform: scale(1.2); /* Scale the image to 120% on hover */
-    }
-    
-    .action-toolbar {
-      padding: 1.1rem;
-      border-top-left-radius: 1rem;
-    }
-    
-    .hearted svg {
-      fill : #c90000
-    }
-
-    .modal-list {
-      overflow-y: scroll;
-      scrollbar-width: auto;
-      max-height: 400px;
-    }
-    
-    
-</style>
