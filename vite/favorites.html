@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" class="uk-theme-neutral">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foodie Hub</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/franken-ui@2.1.2/dist/css/core.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/franken-ui@2.1.2/dist/css/utilities.min.css"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/franken-ui@2.1.2/dist/js/core.iife.js"
+      type="module"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/franken-ui@2.1.2/dist/js/icon.iife.js"
+      type="module"
+    ></script>
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="border-b border-border">
+      <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-3">
+        <div class="flex items-center gap-6">
+          <a class="text-lg font-semibold" href="./index.html">Foodie Hub</a>
+          <ul class="uk-subnav">
+            <li><a href="./index.html">Inspiration</a></li>
+            <li class="uk-active"><a href="./favorites.html">Favorites</a></li>
+          </ul>
+        </div>
+        <form>
+          <input
+            class="uk-input"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+        </form>
+      </div>
+    </header>
+
+    <div id="content" class="mx-auto my-8 max-w-5xl px-4">
+      <div class="uk-card uk-card-body">
+        <div class="mb-4">
+          <label class="text-2xl font-semibold" for="title" id="mealTitle"></label>
+        </div>
+
+        <div class="grid items-start gap-6 md:grid-cols-5">
+          <div class="image-wrapper md:col-span-2" id="mealImg"></div>
+          <div id="ingredientList" class="md:col-span-3"></div>
+        </div>
+
+        <div class="relative mt-6 rounded-lg bg-muted p-6">
+          <h3 class="uk-card-title">Instructions:</h3>
+          <div class="mt-4" id="mealInstruction"></div>
+          <div class="toolbar-wrapper"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="emptyListContainer" class="mx-auto my-8 max-w-3xl px-4" style="display: none">
+      <div class="uk-card uk-card-secondary uk-card-body text-center">
+        <p class="text-lg">
+          Favorite meals list is empty. Find some inspiration
+          <a href="./index.html"><u>here</u></a>
+        </p>
+      </div>
+    </div>
+
+    <nav id="favPagination" class="my-8 flex justify-center gap-2" aria-label="Pagination">
+      <button id="favPrev" class="uk-btn uk-btn-default uk-btn-sm" type="button">Prev</button>
+      <span id="favPage" class="uk-btn uk-btn-primary uk-btn-sm" aria-current="page">1</span>
+      <button id="favNext" class="uk-btn uk-btn-default uk-btn-sm" type="button">Next</button>
+    </nav>
+
+    <div id="confirmModal" data-uk-modal>
+      <div class="uk-modal-dialog uk-modal-body text-center">
+        <h2 class="uk-modal-title">Remove meal from favorites?</h2>
+        <p class="modal-content mt-2"></p>
+        <p class="mt-6 flex justify-center gap-2">
+          <button class="uk-modal-close uk-btn uk-btn-default" type="button">No</button>
+          <button id="confirmBtn" class="uk-btn uk-btn-primary" type="button">Yes</button>
+        </p>
+      </div>
+    </div>
+
+    <script type="module" src="/src/favorites.js"></script>
+  </body>
+</html>

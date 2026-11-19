@@ -1,0 +1,42 @@
+*[id^="ingredient_"] {
+  overflow-y: scroll;
+  max-height: 90%;
+  margin-top: 1rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*[id^="card_"] {
+  min-height: 250px;
+  max-height: 300px;
+}
+
+*[id^="meal_"] {
+  max-height: inherit;
+}
+
+.image-wrapper {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.image-wrapper > img {
+  border-radius: 0.25rem;
+}
+
+#ingredientList .ingredient-row:not(:first-child) {
+  margin-top: 0.5rem;
+}
+
+.action-toolbar {
+  padding: 0.75rem;
+}
+
+.hearted svg {
+  fill: #c90000;
+}
+
+#ingredientList {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
