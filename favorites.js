@@ -17,6 +17,37 @@
     
         let ingredientTemplate = getIngredientTemplate(mealObj);
         $(`#ingredientList`).append(ingredientTemplate);
+        syncIngredientListHeight();
+    }
+
+    let ingredientListResizeObserver;
+
+    function syncIngredientListHeight(){
+        const img = document.querySelector('#mealImg img');
+        const list = document.getElementById('ingredientList');
+        if (!img || !list) return;
+
+        const apply = () => {
+            const height = img.getBoundingClientRect().height;
+            if (height > 0) {
+                list.style.height = `${height}px`;
+            }
+        };
+
+        if (ingredientListResizeObserver) {
+            ingredientListResizeObserver.disconnect();
+        }
+
+        if (typeof ResizeObserver !== 'undefined') {
+            ingredientListResizeObserver = new ResizeObserver(apply);
+            ingredientListResizeObserver.observe(img);
+        }
+
+        if (img.complete) {
+            apply();
+        } else {
+            img.addEventListener('load', apply, { once: true });
+        }
     }
     
     function insertMealInstruction(mealObj){
