@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" class="uk-theme-neutral">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodie Hub</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/franken-ui@2.1.2/dist/css/core.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/franken-ui@2.1.2/dist/css/utilities.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/franken-ui@2.1.2/dist/js/core.iife.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/franken-ui@2.1.2/dist/js/icon.iife.js" type="module"></script>
+</head>
+<body class="bg-background text-foreground">
+
+  <header class="border-b border-border">
+    <div class="mx-auto flex max-w-6xl items-center gap-6 px-4 py-3">
+      <a class="text-lg font-semibold" href="./index.html">Foodie Hub</a>
+      <ul class="uk-subnav">
+        <li class="uk-active"><a href="./index.html">Inspiration</a></li>
+        <li><a href="./favorites.html">Favorites</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <section class="bg-secondary text-secondary-foreground">
+      <div class="mx-auto grid max-w-6xl items-start gap-6 px-6 py-8 md:grid-cols-3">
+        <p class="text-3xl font-semibold">
+          Feeling
+          <br>
+          <u>Bored?</u>
+        </p>
+        <p class="md:col-span-2 md:border-l md:border-border md:pl-6">
+          Feeling adventurous in the kitchen? Let us inspire you! Discover three random,
+          mouthwatering meals that are perfect for spicing up your culinary routine.
+          Whether you're in the mood for something new or want to try a flavor you've never experienced before,
+          this is your chance to explore exciting dishes from all over the world.
+          Ready to expand your taste buds and try something new? Let's dive in!
+        </p>
+      </div>
+    </section>
+
+    <div id="randomMealContainer" class="mx-4 mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4"></div>
+
+    <div id="mealModal" data-uk-modal></div>
+  </main>
+
+  <script type="module" src="/src/meal.js"></script>
+</body>
+</html>
