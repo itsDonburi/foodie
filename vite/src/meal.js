@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import { parseMealInstructions, renderMealInstructions } from './instructions.js'
+import { escapeHtml, parseMealInstructions, renderMealInstructions } from './instructions.js'
 import './inspiration.css'
 
 var mealService = {
@@ -41,15 +41,17 @@ function renderModal(mealId) {
     document.getElementById("mealModal").innerText = "";
 
     let instructionsHtml = renderMealInstructions(parseMealInstructions(meal.strInstructions));
+    let mealTitle = escapeHtml(meal.strMeal || "");
+    let mealThumb = escapeHtml(meal.strMealThumb || "");
 
     var modalTemplate = `
       <div class="uk-modal-dialog uk-modal-body">
         <button class="uk-modal-close" type="button" aria-label="Close" data-uk-close></button>
-        <h2 class="uk-modal-title">${meal.strMeal}</h2>
+        <div class="modal-hero">
+          <img src="${mealThumb}" alt="${mealTitle}">
+          <h2 class="modal-hero-title">${mealTitle}</h2>
+        </div>
         <div class="modal-list">${instructionsHtml}</div>
-        <p class="mt-4">
-        <button class="uk-btn uk-btn-secondary w-full" type="button" onclick="window.open('${meal.strYoutube}', '_blank')">View Recipe</button>
-        </p>
       </div>
     `;
 
